@@ -18,7 +18,7 @@ Html.DevExtreme().Form<EstudianteDto>()
         .Text("Nombre")).ColSpan(4)
         .Editor(e => e.TextBox()
         .MaxLength(100).Placeholder("Ingrese su nombre"));
-        
+
         items.AddSimpleFor(m => m.Apellido)
         .ValidationRules(v => v.AddRequired().Message("El apellido es necesario"))
         .Label(l => l.Location(FormLabelLocation.Top)
@@ -27,18 +27,62 @@ Html.DevExtreme().Form<EstudianteDto>()
         .MaxLength(100).Placeholder("Ingrese su apellido"));
 
         items.AddSimpleFor(m => m.TipoDocumento)
-        .ValidationRules(v => v.AddRequired().Message("El tipo de documento es obligatorio"))
+        .ValidationRules(v => v.AddRequired().Message("Campo requerido"))
         .Label(l => l.Location(FormLabelLocation.Top)
         .Text("Tipo de documento")).ColSpan(4)
-        .Editor(e => e.SelectBox().DataSource(d => d.Array().Data(new List<TipoDocumento>(){ new TipoDocumento})).Placeholder("Seleccione el tipo de documento"));
+        .Editor(e => e.SelectBox().DisplayExpr("Nombre").DataSource(d => d.Array()
+        .Data(new List<TipoDocumento>() { new TipoDocumento() { Id = 1, Code = "CC", Nombre = "Cédula de ciudadanía" } })
+        .Key("Id")).Placeholder("Seleccione el tipo de documento"));
 
         items.AddSimpleFor(m => m.Documento)
         .ValidationRules(v => v.AddRequired().Message("El documento es obligatorio"))
-        .ValidationRules(f => f.AddNumeric().Message("Solo caracteres numericos"))
+        .ValidationRules(f => f.AddNumeric().Message("Solo caracteres numéricos"))
         .Label(l => l.Location(FormLabelLocation.Top)
         .Text("Documento")).ColSpan(4)
         .Editor(e => e.TextBox()
-        .MaxLength(20).Placeholder("Ingrese su Documento"));
+        .MaxLength(20).Placeholder("Ingrese su documento"));
+
+        items.AddSimpleFor(m => m.Sexo)
+        .ValidationRules(v => v.AddRequired().Message("Campo requerido"))
+        .Label(l => l.Location(FormLabelLocation.Top)
+        .Text("Sexo")).ColSpan(4)
+        .Editor(e => e.SelectBox()
+            .DataSource(new List<string>() { "M", "F" })
+            .Placeholder("Seleccione el sexo"));
+
+        items.AddSimpleFor(f => f.FechaNacimiento).ColSpan(4).Label(l => l.Location(FormLabelLocation.Top))
+        .ValidationRules(s => s.AddRequired().Message("Campo requerido"))
+        .Editor(e => e.DateBox().Max(DateTime.Now).DateSerializationFormat("yyyy-MM-dd").DisplayFormat("dd/MM/yyyy"));
+
+        items.AddSimpleFor(m => m.Email)
+        .ValidationRules(v => v.AddRequired().Message("El email es obligatorio"))
+        .ValidationRules(v => v.AddEmail().Message("Ingrese un email valido"))
+        .Label(l => l.Location(FormLabelLocation.Top)
+        .Text("Email")).ColSpan(4)
+        .Editor(e => e.TextBox()
+        .MaxLength(200).Placeholder("Ingrese su email"));
+
+        items.AddSimpleFor(m => m.Telefono)
+        .ValidationRules(v => v.AddRequired().Message("El telefono es obligatorio"))
+        .ValidationRules(v => v.AddNumeric().Message("Solo caracteres numericos"))
+        .Label(l => l.Location(FormLabelLocation.Top)
+        .Text("Telefono")).ColSpan(4)
+        .Editor(e => e.TextBox()
+        .MaxLength(200).Placeholder("Ingrese su telefono"));
+
+        items.AddSimpleFor(m => m.Direccion)
+        .ValidationRules(v => v.AddRequired().Message("La direccion es obligatoria"))
+        .Label(l => l.Location(FormLabelLocation.Top)
+        .Text("Direccion")).ColSpan(4)
+        .Editor(e => e.TextArea()
+        .MaxLength(500).Placeholder("Ingrese su direccion"));
+
+        items.AddSimpleFor(f => f.FechaIngreso).ColSpan(4).Label(l => l.Location(FormLabelLocation.Top).Text("Fecha de ingreso"))
+       .ValidationRules(s => s.AddRequired().Message("Campo requerido"))
+       .Editor(e => e.DateBox().Max(DateTime.Now).DateSerializationFormat("yyyy-MM-dd").DisplayFormat("dd/MM/yyyy"));
+
+        items.AddEmpty().ColSpan(4);
+
+        items.AddButton().ColSpan(4).VerticalAlignment(VerticalAlignment.Bottom).ButtonOptions(s => s.Icon("save").Type(ButtonType.Default).Text("Guardar"));
     })
-    
 )
