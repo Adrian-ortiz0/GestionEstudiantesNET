@@ -3,8 +3,9 @@
 @using EstudiantesCore.Entidades
 @using EstudiantesCore.DTOs
 @{
-}
 
+}
+@Html.AntiForgeryToken()
 @using DevExtreme.AspNet.Mvc;
 
 @(
@@ -83,6 +84,10 @@ Html.DevExtreme().Form<EstudianteDto>()
 
         items.AddEmpty().ColSpan(4);
 
-        items.AddButton().ColSpan(4).VerticalAlignment(VerticalAlignment.Bottom).ButtonOptions(s => s.Icon("save").Type(ButtonType.Default).Text("Guardar"));
+        items.AddButton().ColSpan(4).VerticalAlignment(VerticalAlignment.Bottom).ButtonOptions(s => s.Icon("save").Type(ButtonType.Default).OnClick("Salvar").Text("Guardar"));
     })
 )
+
+@section Scripts{
+    <script src="/js/Estudiantes.js"></script>
+}
