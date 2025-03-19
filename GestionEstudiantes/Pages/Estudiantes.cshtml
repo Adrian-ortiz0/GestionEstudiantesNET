@@ -1,0 +1,44 @@
+﻿@page
+@model GestionEstudiantes.Pages.EstudiantesModel
+@using EstudiantesCore.Entidades
+@using EstudiantesCore.DTOs
+@{
+}
+
+@using DevExtreme.AspNet.Mvc;
+
+@(
+Html.DevExtreme().Form<EstudianteDto>()
+    .ID("FormEstudiante")
+    .ColCount(12)
+    .Items(items =>
+    {
+        items.AddSimpleFor(m => m.Nombre)
+        .Label(l => l.Location(FormLabelLocation.Top)
+        .Text("Nombre")).ColSpan(4)
+        .Editor(e => e.TextBox()
+        .MaxLength(100).Placeholder("Ingrese su nombre"));
+        
+        items.AddSimpleFor(m => m.Apellido)
+        .ValidationRules(v => v.AddRequired().Message("El apellido es necesario"))
+        .Label(l => l.Location(FormLabelLocation.Top)
+        .Text("Apellido")).ColSpan(4)
+        .Editor(e => e.TextBox()
+        .MaxLength(100).Placeholder("Ingrese su apellido"));
+
+        items.AddSimpleFor(m => m.TipoDocumento)
+        .ValidationRules(v => v.AddRequired().Message("El tipo de documento es obligatorio"))
+        .Label(l => l.Location(FormLabelLocation.Top)
+        .Text("Tipo de documento")).ColSpan(4)
+        .Editor(e => e.SelectBox().DataSource(d => d.Array().Data(new List<TipoDocumento>(){ new TipoDocumento})).Placeholder("Seleccione el tipo de documento"));
+
+        items.AddSimpleFor(m => m.Documento)
+        .ValidationRules(v => v.AddRequired().Message("El documento es obligatorio"))
+        .ValidationRules(f => f.AddNumeric().Message("Solo caracteres numericos"))
+        .Label(l => l.Location(FormLabelLocation.Top)
+        .Text("Documento")).ColSpan(4)
+        .Editor(e => e.TextBox()
+        .MaxLength(20).Placeholder("Ingrese su Documento"));
+    })
+    
+)
