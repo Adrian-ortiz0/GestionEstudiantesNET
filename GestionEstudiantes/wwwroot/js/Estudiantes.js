@@ -31,8 +31,33 @@ async function EnviarAlServidor(dataFormulario) {
             url: "/Estudiantes?handler=CrearEstudiante",
             data: dataFormulario
         });
+
         alert("Usuario agregado");
         const form = $("#FormEstudiante").dxForm("instance").resetValues();
+        $("#TableEstudiantes").dxDataGrid("instance").refresh();
+
+    } catch (error) {
+        console.error(error, "Algo salio mal")
+    }
+}
+
+async function ValidarIdentificacionUnica(e) {
+    try {
+
+        const identificacion = e.value;
+
+        const idTipoDocumento = $("FormEstudiante").dxForm("instance").getEditor("TipoDocumento").option("value").id;
+
+        if (idTipoDocumento != 0) {
+
+            const response = await $.ajax({
+                method: "GET",
+                url: "/Estudiantes?handler=VerificarIdentificacion",
+                data: { IdTipoDocumento: idTipoDocumento , documento: identificacion }
+            });
+            return response;
+        }
+
     } catch (error) {
         console.error(error, "Algo salio mal")
     }

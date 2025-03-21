@@ -1,24 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace EstudiantesCore.Entidades
 {
+    [Table("Estudiantes", Schema = "GE")]
     public class Estudiantes
     {
         [Required]
         [Key]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage ="Nombre es obligatorio")]
         [MaxLength(100)]
         public string Nombre { get; set; } = string.Empty;
-        [Required]
+        [Required(ErrorMessage = "Apellido es obligatorio")]
         [MaxLength(100)]
         public string Apellido { get; set; } = string.Empty;
-        [Required]
+        [Required(ErrorMessage = "Documento es obligatorio")]
         [MaxLength(20)]
         public string Documento {  get; set; } = string.Empty;
         [Required]
