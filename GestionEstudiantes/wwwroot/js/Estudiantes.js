@@ -62,3 +62,23 @@ async function ValidarIdentificacionUnica(e) {
         console.error(error, "Algo salio mal")
     }
 }
+
+$(document).ready(function () {
+    $("#FormEstudiante").hide();
+    $("#btnVolver").hide();
+});
+
+// Hide() para mostrar algo y hacerlo aparecer
+function MostrarFormularioAgregar() {
+    $("#TableEstudiantes").hide();   
+    $("#FormEstudiante").show();     
+    $("#btnVolver").show();          
+    $(".dx-button:contains('Nuevo alumno')").hide(); 
+}
+
+function VerTabla() {
+    $("#TableEstudiantes").show();   
+    $("#FormEstudiante").hide();    
+    $("#btnVolver").hide();        
+    $(".dx-button:contains('Nuevo alumno')").show();  
+}

@@ -7,7 +7,8 @@
 }
 @Html.AntiForgeryToken()
 @using DevExtreme.AspNet.Mvc;
-
+<div class="mt-3">
+    @(Html.DevExtreme().Button().ID("btnVolver").Text("Volver").OnClick("VerTabla"))
 @(
 Html.DevExtreme().Form<Estudiantes>()
     .ID("FormEstudiante")
@@ -89,15 +90,16 @@ Html.DevExtreme().Form<Estudiantes>()
     }
     )
 )
+</div>
 
 <div class="mt-3">
-    <h1>Estudiantes matriculados</h1>
-
+@(Html.DevExtreme().Button()
+.Text("Nuevo alumno")
+.OnClick("MostrarFormularioAgregar"))
 @(
 Html.DevExtreme().DataGrid<Estudiantes>()
     .ID("TableEstudiantes")
     .ShowRowLines(true)
-    .Selection(s => s.SelectAllMode(SelectAllMode.AllPages).Mode(SelectionMode.Multiple))
     .Export(s => s.Enabled(true))
     .Editing(s => s.AllowAdding(true).AllowDeleting(true).AllowUpdating(true).UseIcons(true).Mode(GridEditMode.Form))
     .DataSource(s => s.RemoteController().LoadUrl("/Estudiantes?handler=ObtenerEstudiantes"))
@@ -113,6 +115,7 @@ Html.DevExtreme().DataGrid<Estudiantes>()
         s.AddFor(q => q.Documento).Name("Identificacion").Width(400);
         s.AddFor(q => q.Nombre).Width(400);
         s.AddFor(q => q.Apellido).Width(400);
+        s.AddFor(q => q.Estado.Nombre).Width(400);
 
     })
 )
