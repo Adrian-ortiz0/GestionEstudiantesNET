@@ -24,7 +24,8 @@ namespace GestionEstudiantes.Implementations
 
         public void MatricularEstudiante(Estudiantes estudiantes)
         {
-            
+            _dbcontext.EstadoEstudiante.Find(estudiantes.Estado.Id);
+            _dbcontext.TipoDocumento.Find(estudiantes.TipoDocumento.Id);
             _dbcontext.Estudiante.Add(estudiantes);
             _dbcontext.SaveChanges();
         }

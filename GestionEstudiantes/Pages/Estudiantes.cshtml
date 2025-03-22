@@ -1,5 +1,6 @@
 ﻿@page
 @model GestionEstudiantes.Pages.EstudiantesModel
+<link rel="stylesheet" href="~/css/Estudiantes.css" asp-append-version="true" />
 @using EstudiantesCore.Entidades
 @using EstudiantesCore.DTOs
 @{
@@ -7,119 +8,147 @@
 }
 @Html.AntiForgeryToken()
 @using DevExtreme.AspNet.Mvc;
-<div class="mt-3">
-    @(Html.DevExtreme().Button().ID("btnVolver").Text("Volver").OnClick("VerTabla"))
-@(
-Html.DevExtreme().Form<Estudiantes>()
-    .ID("FormEstudiante")
-    .ColCount(12)
-    .Items(items =>
-    {
-        items.AddSimpleFor(m => m.Nombre)
-.Label(l => l.Location(FormLabelLocation.Top)
-.Text("Nombre")).ColSpan(4)
-.Editor(e => e.TextBox()
-.MaxLength(100).Placeholder("Ingrese su nombre"));
+<div id="FormContainer" class="mt-3" style="display:none;">
 
-        items.AddSimpleFor(m => m.Apellido)
-.ValidationRules(v => v.AddRequired().Message("El apellido es necesario"))
-.Label(l => l.Location(FormLabelLocation.Top)
-.Text("Apellido")).ColSpan(4)
-.Editor(e => e.TextBox()
-.MaxLength(100).Placeholder("Ingrese su apellido"));
+    @(Html.DevExtreme()
+                .Button()
+                .Type(ButtonType.Default)
+                .Icon("back")
+                .ID("btnVolver")
+                .ElementAttr("style", "margin-bottom: 20px;")
+                .Text("Volver")
+                .OnClick("VerTabla"))
 
-        items.AddSimpleFor(m => m.TipoDocumento)
-    .ValidationRules(v => v.AddRequired().Message("Campo requerido"))
-    .Label(l => l.Location(FormLabelLocation.Top)
-    .Text("Tipo de documento")).ColSpan(4)
-    .Editor(e => e.SelectBox().DisplayExpr("Nombre")
-    .DataSource(d => d.RemoteController().LoadUrl("/Estudiantes?handler=TipoDocumento").Key("Id"))
-    .Placeholder("Seleccione el tipo de documento"));
+    @(
+            Html.DevExtreme().Form<Estudiantes>()
+                .ID("FormEstudiante")
+                .ColCount(12)
+                .Items(items =>
+                {
+                    items.AddSimpleFor(m => m.Nombre)
+            .Label(l => l.Location(FormLabelLocation.Top)
+            .Text("Nombre")).ColSpan(4)
+            .Editor(e => e.TextBox()
+            .MaxLength(100).Placeholder("Ingrese su nombre"));
 
-        items.AddSimpleFor(m => m.Documento)
-    .ValidationRules(v => v.AddRequired().Message("El documento es obligatorio"))
-    .ValidationRules(f => f.AddNumeric().Message("Solo caracteres numéricos"))
-    .ValidationRules(f => f.AddAsync().ValidationCallback("ValidarIdentificacionUnica").Message("El estudiante con este documento ya esta registrado"))
-    .Label(l => l.Location(FormLabelLocation.Top)
-    .Text("Documento")).ColSpan(4)
-    .Editor(e => e.TextBox()
-    .MaxLength(20).Placeholder("Ingrese su documento"));
+                    items.AddSimpleFor(m => m.Apellido)
+            .ValidationRules(v => v.AddRequired().Message("El apellido es necesario"))
+            .Label(l => l.Location(FormLabelLocation.Top)
+            .Text("Apellido")).ColSpan(4)
+            .Editor(e => e.TextBox()
+            .MaxLength(100).Placeholder("Ingrese su apellido"));
 
-        items.AddSimpleFor(m => m.Sexo)
-    .ValidationRules(v => v.AddRequired().Message("Campo requerido"))
-    .Label(l => l.Location(FormLabelLocation.Top)
-    .Text("Sexo")).ColSpan(4)
-    .Editor(e => e.SelectBox()
-.DataSource(new List<string>() { "M", "F" })
-.Placeholder("Seleccione el sexo"));
+                    items.AddSimpleFor(m => m.TipoDocumento)
+                .ValidationRules(v => v.AddRequired().Message("Campo requerido"))
+                .Label(l => l.Location(FormLabelLocation.Top)
+                .Text("Tipo de documento")).ColSpan(4)
+                .Editor(e => e.SelectBox().DisplayExpr("Nombre")
+                .DataSource(d => d.RemoteController().LoadUrl("/Estudiantes?handler=TipoDocumento").Key("Id"))
+                .Placeholder("Seleccione el tipo de documento"));
 
-        items.AddSimpleFor(f => f.FechaNacimiento).ColSpan(4).Label(l => l.Location(FormLabelLocation.Top))
-    .ValidationRules(s => s.AddRequired().Message("Campo requerido"))
-    .Editor(e => e.DateBox().Max(DateTime.Now).DateSerializationFormat("yyyy-MM-dd").DisplayFormat("dd/MM/yyyy"));
+                    items.AddSimpleFor(m => m.Documento)
+                .ValidationRules(v => v.AddRequired().Message("El documento es obligatorio"))
+                .ValidationRules(f => f.AddNumeric().Message("Solo caracteres numéricos"))
+                .ValidationRules(f => f.AddAsync().ValidationCallback("ValidarIdentificacionUnica").Message("El estudiante con este documento ya esta registrado"))
+                .Label(l => l.Location(FormLabelLocation.Top)
+                .Text("Documento")).ColSpan(4)
+                .Editor(e => e.TextBox()
+                .MaxLength(20).Placeholder("Ingrese su documento"));
 
-        items.AddSimpleFor(m => m.Email)
-    .ValidationRules(v => v.AddRequired().Message("El email es obligatorio"))
-    .ValidationRules(v => v.AddEmail().Message("Ingrese un email valido"))
-    .Label(l => l.Location(FormLabelLocation.Top)
-    .Text("Email")).ColSpan(4)
-    .Editor(e => e.TextBox()
-    .MaxLength(200).Placeholder("Ingrese su email"));
+                    items.AddSimpleFor(m => m.Sexo)
+                .ValidationRules(v => v.AddRequired().Message("Campo requerido"))
+                .Label(l => l.Location(FormLabelLocation.Top)
+                .Text("Sexo")).ColSpan(4)
+                .Editor(e => e.SelectBox()
+            .DataSource(new List<string>() { "M", "F" })
+            .Placeholder("Seleccione el sexo"));
 
-        items.AddSimpleFor(m => m.Telefono)
-    .ValidationRules(v => v.AddRequired().Message("El telefono es obligatorio"))
-    .ValidationRules(v => v.AddNumeric().Message("Solo caracteres numericos"))
-    .Label(l => l.Location(FormLabelLocation.Top)
-    .Text("Telefono")).ColSpan(4)
-    .Editor(e => e.TextBox()
-    .MaxLength(200).Placeholder("Ingrese su telefono"));
+                    items.AddSimpleFor(f => f.FechaNacimiento).ColSpan(4).Label(l => l.Location(FormLabelLocation.Top))
+                .ValidationRules(s => s.AddRequired().Message("Campo requerido"))
+                .Editor(e => e.DateBox().Max(DateTime.Now).DateSerializationFormat("yyyy-MM-dd").DisplayFormat("dd/MM/yyyy"));
 
-        items.AddSimpleFor(m => m.Direccion)
-    .ValidationRules(v => v.AddRequired().Message("La direccion es obligatoria"))
-    .Label(l => l.Location(FormLabelLocation.Top)
-    .Text("Direccion")).ColSpan(4)
-    .Editor(e => e.TextArea()
-    .MaxLength(500).Placeholder("Ingrese su direccion"));
+                    items.AddSimpleFor(m => m.Email)
+                .ValidationRules(v => v.AddRequired().Message("El email es obligatorio"))
+                .ValidationRules(v => v.AddEmail().Message("Ingrese un email valido"))
+                .Label(l => l.Location(FormLabelLocation.Top)
+                .Text("Email")).ColSpan(4)
+                .Editor(e => e.TextBox()
+                .MaxLength(200).Placeholder("Ingrese su email"));
 
-        items.AddSimpleFor(f => f.FechaIngreso).ColSpan(4).Label(l => l.Location(FormLabelLocation.Top).Text("Fecha de ingreso"))
-   .ValidationRules(s => s.AddRequired().Message("Campo requerido"))
-   .Editor(e => e.DateBox().Max(DateTime.Now).DateSerializationFormat("yyyy-MM-dd").DisplayFormat("dd/MM/yyyy"));
+                    items.AddSimpleFor(m => m.Telefono)
+                .ValidationRules(v => v.AddRequired().Message("El telefono es obligatorio"))
+                .ValidationRules(v => v.AddNumeric().Message("Solo caracteres numericos"))
+                .Label(l => l.Location(FormLabelLocation.Top)
+                .Text("Telefono")).ColSpan(4)
+                .Editor(e => e.TextBox()
+                .MaxLength(200).Placeholder("Ingrese su telefono"));
 
-        items.AddEmpty().ColSpan(4);
+                    items.AddSimpleFor(m => m.Direccion)
+                .ValidationRules(v => v.AddRequired().Message("La direccion es obligatoria"))
+                .Label(l => l.Location(FormLabelLocation.Top)
+                .Text("Direccion")).ColSpan(4)
+                .Editor(e => e.TextArea()
+                .MaxLength(500).Placeholder("Ingrese su direccion"));
 
-        items.AddButton().ColSpan(4).VerticalAlignment(VerticalAlignment.Bottom).ButtonOptions(s => s.Icon("save").Type(ButtonType.Default).OnClick("Salvar").Text("Guardar"));
-    }
-    )
+                    items.AddSimpleFor(f => f.FechaIngreso).ColSpan(4).Label(l => l.Location(FormLabelLocation.Top).Text("Fecha de ingreso"))
+               .ValidationRules(s => s.AddRequired().Message("Campo requerido"))
+               .Editor(e => e.DateBox().Max(DateTime.Now).DateSerializationFormat("yyyy-MM-dd").DisplayFormat("dd/MM/yyyy"));
+
+                    items.AddEmpty().ColSpan(4);
+
+                    items.AddButton().ColSpan(4).VerticalAlignment(VerticalAlignment.Bottom).ButtonOptions(s => s.Icon("save").Type(ButtonType.Default).OnClick("Salvar").Text("Guardar"));
+                }
+                )
+            )
+</div>
+
+<div class="mt-3" id="TableContainer">
+    @(Html.DevExtreme().Button()
+            .Text("Nuevo alumno")
+            .Icon("add")
+            .Type(ButtonType.Default)
+            .OnClick("MostrarFormularioAgregar"))
+    @(
+        Html.DevExtreme().DataGrid<Estudiantes>()
+                .ID("TableEstudiantes")
+                .ShowRowLines(true)
+                .Export(s => s.Enabled(true))
+                .Editing(s => s.AllowAdding(true).AllowDeleting(true).AllowUpdating(true).UseIcons(true).Mode(GridEditMode.Form))
+                .DataSource(s => s.RemoteController().LoadUrl("/Estudiantes?handler=ObtenerEstudiantes"))
+                .AllowColumnReordering(true)
+                .RowAlternationEnabled(true)
+                .FilterRow(s => s.Visible(true))
+                .ShowBorders(true)
+                .AllowColumnResizing(true)
+                .Paging(s => s.Enabled(true).PageSize(5))
+                .SearchPanel(s => s.Visible(true))
+                .Columns(s =>
+                {
+                    s.AddFor(q => q.TipoDocumento.Id).Caption("Tipo documento")
+                    .Lookup(l => l.DataSource(f => f.RemoteController()
+                    .LoadUrl("/Estudiantes?handler=TipoDocumento").Key("Id")).DisplayExpr("Nombre").ValueExpr("Id"));
+                    s.AddFor(q => q.Documento).Name("Identificacion");
+                    s.AddFor(q => q.Nombre);
+                    s.AddFor(q => q.Apellido);
+                    s.AddFor(q => q.Estado.Id).Caption("Estado")
+                        .Lookup(l => l.DataSource(f => f.RemoteController()
+                        .LoadUrl("/Estudiantes?handler=Estados")
+                        .Key("Id")).DisplayExpr("Nombre").ValueExpr("Id"));
+
+                    s.Add()
+                    .Visible(true)
+                    .Type(GridCommandColumnType.Buttons)
+                    .Width(110)
+                    .Buttons(b => {
+                        b.Add().Icon("info").Hint("Ver").OnClick("VerEstudianteFromGrid");
+                    b.Add().Icon("edit").Hint("Editar").OnClick("EditarEstudianteFromGrid");
+                    });
+                })
 )
 </div>
 
-<div class="mt-3">
-@(Html.DevExtreme().Button()
-.Text("Nuevo alumno")
-.OnClick("MostrarFormularioAgregar"))
-@(
-Html.DevExtreme().DataGrid<Estudiantes>()
-    .ID("TableEstudiantes")
-    .ShowRowLines(true)
-    .Export(s => s.Enabled(true))
-    .Editing(s => s.AllowAdding(true).AllowDeleting(true).AllowUpdating(true).UseIcons(true).Mode(GridEditMode.Form))
-    .DataSource(s => s.RemoteController().LoadUrl("/Estudiantes?handler=ObtenerEstudiantes"))
-    .AllowColumnReordering(true)
-    .AllowColumnResizing(true)
-    .Paging(s => s.Enabled(true).PageSize(5))
-    .SearchPanel(s => s.Visible(true))
-    .Columns(s =>
-    {
-        s.AddFor(q => q.TipoDocumento.Nombre).Width(400)
-        .Lookup(l => l.DataSource(f => f.RemoteController()
-        .LoadUrl("/Estudiantes?handler=TipoDocumento").Key("Id")).DisplayExpr("Nombre"));
-        s.AddFor(q => q.Documento).Name("Identificacion").Width(400);
-        s.AddFor(q => q.Nombre).Width(400);
-        s.AddFor(q => q.Apellido).Width(400);
-        s.AddFor(q => q.Estado.Nombre).Width(400);
 
-    })
-)
-</div>
+
 
 @section Scripts{
     <script src="/js/Estudiantes.js"></script>

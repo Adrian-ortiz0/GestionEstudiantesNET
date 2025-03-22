@@ -63,22 +63,21 @@ async function ValidarIdentificacionUnica(e) {
     }
 }
 
-$(document).ready(function () {
-    $("#FormEstudiante").hide();
-    $("#btnVolver").hide();
-});
+function VerEstudianteFromGrid(e) {
+    console.log(e);
+}
 
-// Hide() para mostrar algo y hacerlo aparecer
+function EditarEstudianteFromGrid(e) {
+    console.log(e);
+}
+
+
 function MostrarFormularioAgregar() {
-    $("#TableEstudiantes").hide();   
-    $("#FormEstudiante").show();     
-    $("#btnVolver").show();          
-    $(".dx-button:contains('Nuevo alumno')").hide(); 
+    $("#TableContainer").hide();
+    $("#FormContainer").show();
 }
 
 function VerTabla() {
-    $("#TableEstudiantes").show();   
-    $("#FormEstudiante").hide();    
-    $("#btnVolver").hide();        
-    $(".dx-button:contains('Nuevo alumno')").show();  
+    $("#FormContainer").hide();
+    $("#TableContainer").show();
 }
